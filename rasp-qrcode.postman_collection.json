@@ -1,0 +1,167 @@
+{
+	"info": {
+		"_postman_id": "894d2100-9077-42a6-9a91-0e25eba8fab0",
+		"name": "rasp-qrcode",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "44012170",
+		"_collection_link": "https://darley-7792362.postman.co/workspace/darley's-Workspace~c6894885-ea94-439a-8224-87b83b05c192/collection/44012170-894d2100-9077-42a6-9a91-0e25eba8fab0?action=share&source=collection_link&creator=44012170"
+	},
+	"item": [
+		{
+			"name": "login",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "  {\n    \"username\": \"teste\",\n    \"password\": \"yhvh77\"\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://10.100.0.105:8000/api/token/",
+					"protocol": "http",
+					"host": [
+						"10",
+						"100",
+						"0",
+						"105"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"token",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "grava-qr-code",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUxMTcxNjk4LCJpYXQiOjE3NTExNzEzOTgsImp0aSI6Ijk3ZDU4NWI5MzdkMzQ5YjdiMTMzNWE5Zjc4NjY3ZThhIiwidXNlcl9pZCI6MX0.iQM9fFbM98zXwH8KSGpXn3zdJ9Fr5-_bFxTck6PSasA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"qrcode\": \"04647585266193582466533316298356\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/qrcode/register/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"qrcode",
+						"register",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "lista",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUxMTcxNjk4LCJpYXQiOjE3NTExNzEzOTgsImp0aSI6Ijk3ZDU4NWI5MzdkMzQ5YjdiMTMzNWE5Zjc4NjY3ZThhIiwidXNlcl9pZCI6MX0.iQM9fFbM98zXwH8KSGpXn3zdJ9Fr5-_bFxTck6PSasA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://10.100.0.105:8000/api/qrcode/list/",
+					"protocol": "http",
+					"host": [
+						"10",
+						"100",
+						"0",
+						"105"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"qrcode",
+						"list",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "apaga-qr-code",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUxMTcxNjk4LCJpYXQiOjE3NTExNzEzOTgsImp0aSI6Ijk3ZDU4NWI5MzdkMzQ5YjdiMTMzNWE5Zjc4NjY3ZThhIiwidXNlcl9pZCI6MX0.iQM9fFbM98zXwH8KSGpXn3zdJ9Fr5-_bFxTck6PSasA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"qrcode\": \"04647585266193582466533316298356\"\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://10.100.0.105:8000/api/qrcode/delete/",
+					"protocol": "http",
+					"host": [
+						"10",
+						"100",
+						"0",
+						"105"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"qrcode",
+						"delete",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
