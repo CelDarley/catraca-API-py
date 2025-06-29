@@ -9,7 +9,7 @@ sudo apt update && sudo apt upgrade -y
 
 # Instalar dependências do sistema
 echo "Instalando dependências do sistema..."
-sudo apt install -y python3 python3-pip python3-venv nginx
+sudo apt install -y python3 python3-pip python3-venv nginx redis-server
 
 # Criar diretório de logs
 echo "Criando diretórios de log..."
@@ -90,6 +90,11 @@ Restart=always
 [Install]
 WantedBy=multi-user.target
 EOF
+
+# Configurar Redis
+echo "Configurando Redis..."
+sudo systemctl enable redis-server
+sudo systemctl start redis-server
 
 # Iniciar serviço
 sudo systemctl daemon-reload
