@@ -17,7 +17,8 @@ from gpiozero.pins.lgpio import LGPIOFactory
 
 # ---------- CONFIGURAÇÕES ----------
 API_URL          = "https://api.thalamus.ind.br/acesso"  # URL configurável
-OUTPUT_PIN       = 23
+OUTPUT_PIN_23    = 23
+OUTPUT_PIN_24    = 24
 REDIS_HOST       = "127.0.0.1"  # Mesmo que Django
 REDIS_PORT       = 6379
 REDIS_DB         = 1            # Mesmo que Django
@@ -177,8 +178,9 @@ try:
     from gpiozero import Device
     Device.pin_factory = LGPIOFactory()
     
-    output = OutputDevice(OUTPUT_PIN, active_high=True, initial_value=False)
-    print(f"[GPIO] Saída configurada no pino {OUTPUT_PIN} (LGPIO)")
+    output_23 = OutputDevice(OUTPUT_PIN_23, active_high=True, initial_value=False)
+    output_24 = OutputDevice(OUTPUT_PIN_24, active_high=True, initial_value=False)
+    print(f"[GPIO] Saídas configuradas nos pinos {OUTPUT_PIN_23} e {OUTPUT_PIN_24} (LGPIO)")
     gpio_available = True
 except Exception as e:
     print(f"[GPIO] Erro ao configurar GPIO: {e}")
@@ -190,24 +192,26 @@ output_active = threading.Event()
 # ---------- FUNÇÃO PARA ACIONAR SAÍDA ----------
 def acionar_saida(qr_data):
     if output_active.is_set():
-        print("[INFO] Saída já está acionada, ignorando novo acionamento.")
+        print("[INFO] Saídas já estão acionadas, ignorando novo acionamento.")
         return
     
     def thread_acionamento():
         output_active.set()
         if gpio_available:
-            output.on()
-            print(f"[INFO] Saída ACESA por {OUTPUT_PULSE} segundos (QR Code: {qr_data}).")
+            output_23.on()
+            output_24.on()
+            print(f"[INFO] Saídas ACESAS por {OUTPUT_PULSE} segundos (QR Code: {qr_data}).")
         else:
-            print(f"[SIMULAÇÃO] Saída seria ACIONADA por {OUTPUT_PULSE} segundos (QR Code: {qr_data}).")
+            print(f"[SIMULAÇÃO] Saídas seriam ACIONADAS por {OUTPUT_PULSE} segundos (QR Code: {qr_data}).")
         
         time.sleep(OUTPUT_PULSE)
         
         if gpio_available:
-            output.off()
-            print("[INFO] Saída APAGADA.")
+            output_23.off()
+            output_24.off()
+            print("[INFO] Saídas APAGADAS.")
         else:
-            print("[SIMULAÇÃO] Saída seria DESLIGADA.")
+            print("[SIMULAÇÃO] Saídas seriam DESLIGADAS.")
         
         output_active.clear()
     
@@ -228,7 +232,7 @@ def main_loop():
     print("\n[READY] Sistema de QR Code com Redis Django iniciado.")
     print(f"[CONFIG] API URL: {API_URL}")
     print(f"[CONFIG] Redis: {REDIS_HOST}:{REDIS_PORT} (DB:{REDIS_DB})")
-    print(f"[CONFIG] Saída: GPIO {OUTPUT_PIN} ({'ATIVO' if gpio_available else 'SIMULAÇÃO'})")
+    print(f"[CONFIG] Saídas: GPIO {OUTPUT_PIN_23} e {OUTPUT_PIN_24} ({'ATIVO' if gpio_available else 'SIMULAÇÃO'})")
     print(f"[CONFIG] QR Codes autorizados: {redis_manager.get_qrcode_count()}")
     print(f"[CONFIG] Debounce QR Code: {QRCODE_DEBOUNCE} segundos")
     print(f"[CONFIG] Tempo de acionamento: {OUTPUT_PULSE} segundos")
@@ -267,7 +271,7 @@ def main_loop():
                         #     if sucesso:
                         #         print("[API] Acesso registrado com sucesso na API")
                         #     else:
-                        #         print("[API] Falha ao registrar acesso na API (mas porta foi acionada)")
+                        #         print("[API] Falha ao registrar acesso na API (mas portas foram acionadas)")
                         
                         # threading.Thread(target=thread_notificacao, daemon=True).start()
                         
@@ -284,7 +288,8 @@ def main_loop():
     finally:
         cap.release()
         if gpio_available:
-            output.off()
+            output_23.off()
+            output_24.off()
         print("[INFO] Sistema encerrado.")
 
 if __name__ == "__main__":

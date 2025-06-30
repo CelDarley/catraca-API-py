@@ -1,0 +1,30 @@
+[Unit]
+Description=Rasp API QR Code - Django REST Framework
+After=network.target redis.service
+Wants=redis.service
+
+[Service]
+Type=exec
+User=darley
+Group=darley
+WorkingDirectory=/home/darley/api-rasp-qrcode
+Environment=PATH=/home/darley/api-rasp-qrcode/venv/bin
+Environment=DJANGO_SETTINGS_MODULE=rasp_api.settings
+ExecStart=/home/darley/api-rasp-qrcode/venv/bin/gunicorn --config gunicorn.conf.py rasp_api.wsgi:application
+ExecReload=/bin/kill -s HUP $MAINPID
+Restart=always
+RestartSec=3
+
+# Configurações de segurança
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ReadWritePaths=/home/darley/api-rasp-qrcode
+
+# Logs
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=rasp_api
+
+[Install]
+WantedBy=multi-user.target 
